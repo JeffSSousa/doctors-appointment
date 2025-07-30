@@ -3,6 +3,8 @@ package com.jeffersonssousa.doctorsappointment.entity;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import com.jeffersonssousa.doctorsappointment.dto.PatientRequestDTO;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -35,6 +37,15 @@ public class Patient {
 		this.sex = sex;
 		this.weight = weight;
 		this.height = height;
+	}
+	
+	public Patient(PatientRequestDTO dto) {
+		this.name = dto.name();
+		this.cpf = dto.cpf();
+		this.birthDate = dto.birthDate();
+		this.sex = dto.sex();
+		this.weight = dto.weight();
+		this.height = dto.height();
 	}
 
 	public Long getPatientId() {
