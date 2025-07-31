@@ -2,6 +2,8 @@ package com.jeffersonssousa.doctorsappointment.entity;
 
 import java.util.Objects;
 
+import com.jeffersonssousa.doctorsappointment.dto.DoctorRequestDTO;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,6 +33,14 @@ public class Doctor {
 		this.phone = phone;
 		this.crm = crm;
 		this.specialty = specialty;
+	}
+	
+	public Doctor(DoctorRequestDTO dto) {
+		this.name = dto.name();
+		this.email = dto.email();
+		this.phone = dto.phone();
+		this.crm = dto.crm();
+		this.specialty = dto.specialty();
 	}
 
 	public Long getDoctorId() {
