@@ -3,6 +3,8 @@ package com.jeffersonssousa.doctorsappointment.entity;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.jeffersonssousa.doctorsappointment.dto.AppointmentRequestDTO;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,7 +15,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_appoitment")
-public class Appoitment {
+public class Appointment {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,10 +33,15 @@ public class Appoitment {
 	@JoinColumn(name = "patient_id", nullable = false)
 	private Patient patient;
 
-	public Appoitment() {
+	public Appointment() {
+	}
+	
+	public Appointment(AppointmentRequestDTO dto) {
+		this.appointmentDate = dto.appointmentDate();
+		this.durationInMinutes = dto.durationInMinutes();
 	}
 
-	public Appoitment(Long id, LocalDateTime appointmentDate, Integer durationInMinutes) {
+	public Appointment(Long id, LocalDateTime appointmentDate, Integer durationInMinutes) {
 		this.appoitmentId = id;
 		this.appointmentDate = appointmentDate;
 		this.durationInMinutes = durationInMinutes;
@@ -69,6 +76,25 @@ public class Appoitment {
 		return Objects.hash(appoitmentId);
 	}
 
+	
+	
+	
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+
+	public Patient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -77,7 +103,7 @@ public class Appoitment {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Appoitment other = (Appoitment) obj;
+		Appointment other = (Appointment) obj;
 		return Objects.equals(appoitmentId, other.appoitmentId);
 	}
 
