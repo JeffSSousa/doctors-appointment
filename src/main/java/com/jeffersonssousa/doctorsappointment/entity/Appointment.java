@@ -24,6 +24,8 @@ public class Appointment {
 	private LocalDateTime appointmentDate;
 
 	private Integer durationInMinutes;
+	
+	private boolean isReturn;
 
 	@ManyToOne
 	@JoinColumn(name = "doctor_id", nullable = false)
@@ -38,13 +40,14 @@ public class Appointment {
 	
 	public Appointment(AppointmentRequestDTO dto) {
 		this.appointmentDate = dto.appointmentDate();
-		this.durationInMinutes = dto.durationInMinutes();
+		this.isReturn = dto.isReturn();
 	}
 
-	public Appointment(Long id, LocalDateTime appointmentDate, Integer durationInMinutes) {
+	public Appointment(Long id, LocalDateTime appointmentDate, Integer durationInMinutes, boolean isReturn) {
 		this.appoitmentId = id;
 		this.appointmentDate = appointmentDate;
 		this.durationInMinutes = durationInMinutes;
+		this.isReturn = isReturn;
 	}
 
 	public Long getId() {
@@ -70,14 +73,6 @@ public class Appointment {
 	public void setDurationInMinutes(Integer durationInMinutes) {
 		this.durationInMinutes = durationInMinutes;
 	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(appoitmentId);
-	}
-
-	
-	
 	
 	public Doctor getDoctor() {
 		return doctor;
@@ -94,6 +89,20 @@ public class Appointment {
 	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
+
+	public boolean isReturn() {
+		return isReturn;
+	}
+
+	public void setReturn(boolean isReturn) {
+		this.isReturn = isReturn;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(appoitmentId);
+	}
+	
 
 	@Override
 	public boolean equals(Object obj) {

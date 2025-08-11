@@ -31,6 +31,12 @@ public class AppointmentService {
 		appointment.setDoctor(doctor);
 		appointment.setPatient(patient);
 		
+		if(appointment.isReturn()) {
+			appointment.setDurationInMinutes(15);
+		} else {
+			appointment.setDurationInMinutes(30);
+		}
+		
 		appoitmentRepository.save(appointment);
 		
 	}
