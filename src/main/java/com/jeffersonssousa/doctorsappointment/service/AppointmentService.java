@@ -1,17 +1,21 @@
 package com.jeffersonssousa.doctorsappointment.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jeffersonssousa.doctorsappointment.dto.AppointmentRequestDTO;
+import com.jeffersonssousa.doctorsappointment.dto.AppointmentResponseDTO;
 import com.jeffersonssousa.doctorsappointment.entity.Appointment;
 import com.jeffersonssousa.doctorsappointment.entity.Doctor;
 import com.jeffersonssousa.doctorsappointment.entity.Patient;
 import com.jeffersonssousa.doctorsappointment.repository.AppoitmentRepository;
 import com.jeffersonssousa.doctorsappointment.repository.DoctorRepository;
 import com.jeffersonssousa.doctorsappointment.repository.PatientRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class AppointmentService {
@@ -46,5 +50,14 @@ public class AppointmentService {
 		
 		appoitmentRepository.save(appointment);
 		
+	}
+
+	public List<AppointmentResponseDTO> listAppointmentByDoctor(Long id) {
+		Doctor doctor = doctorRepository.findById(id)
+				        .orElseThrow(() -> new EntityNotFoundException("Não foi encontrado um Doctor com esse id: " + id));
+		
+		List<AppointmentResponseDTO> list = appoitmentRepository.findAllByDoctor(doctor).stream().map(AppointmentResponseDTO::new).toList();
+		
+		return list;
 	}
 }
