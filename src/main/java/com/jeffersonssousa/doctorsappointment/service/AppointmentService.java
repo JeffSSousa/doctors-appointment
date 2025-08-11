@@ -35,6 +35,7 @@ public class AppointmentService {
 			throw new IllegalArgumentException("A data tem que ser futura!!");
 		}
 		
+		
 		Doctor doctor = doctorRepository.getReferenceById(dto.doctorId());
 		Patient patient = patientRepository.getReferenceById(dto.patientId());
 		
@@ -48,6 +49,12 @@ public class AppointmentService {
 			appointment.setDurationInMinutes(30);
 		}
 		
+		
+	    LocalDateTime startDateTime = appointment.getAppointmentDate();
+	    LocalDateTime endDateTime = startDateTime.plusMinutes(appointment.getDurationInMinutes());
+
+	    validateScheduleConflict(doctor, startDateTime, endDateTime);
+		
 		appoitmentRepository.save(appointment);
 		
 	}
@@ -60,4 +67,33 @@ public class AppointmentService {
 		
 		return list;
 	}
+	
+	
+	
+	
+	private void validateScheduleConflict(Doctor doctor, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+	    List<Appointment> appointments = appoitmentRepository.findAllByDoctorAndAppointmentDateBetween(
+	        doctor,
+	        startDateTime.toLocalDate().atStartOfDay(),
+	        startDateTime.toLocalDate().atTime(23, 59, 59)
+	    );
+
+	    boolean hasConflict = appointments.stream()
+	        .anyMatch(existing -> isOverlapping(
+	            existing.getAppointmentDate(),
+	            existing.getAppointmentDate().plusMinutes(existing.getDurationInMinutes()),
+	            startDateTime,
+	            endDateTime
+	        ));
+
+	    if (hasConflict) {
+	        throw new IllegalArgumentException("Já existe uma consulta para este médico nesse horário.");
+	    }
+	}
+
+	private boolean isOverlapping(LocalDateTime start1, LocalDateTime end1,
+	                              LocalDateTime start2, LocalDateTime end2) {
+	    return !start1.isAfter(end2) && !start2.isAfter(end1);
+	}
+	
 }

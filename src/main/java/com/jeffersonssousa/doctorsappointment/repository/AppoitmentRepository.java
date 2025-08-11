@@ -1,5 +1,6 @@
 package com.jeffersonssousa.doctorsappointment.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,5 +13,7 @@ import com.jeffersonssousa.doctorsappointment.entity.Doctor;
 public interface AppoitmentRepository extends JpaRepository<Appointment, Long>{
 	
 	List<Appointment> findAllByDoctor(Doctor doctor);
+	
+	List<Appointment> findAllByDoctorAndAppointmentDateBetween(Doctor doctor, LocalDateTime start, LocalDateTime end);
 
 }
