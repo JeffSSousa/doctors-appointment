@@ -1,5 +1,7 @@
 package com.jeffersonssousa.doctorsappointment.service;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,11 @@ public class AppointmentService {
 	private PatientRepository patientRepository;
 	
 	public void insert(AppointmentRequestDTO dto) {
+		
+		if(dto.appointmentDate().isBefore(LocalDateTime.now())) {
+			throw new IllegalArgumentException("A data tem que ser futura!!");
+		}
+		
 		Doctor doctor = doctorRepository.getReferenceById(dto.doctorId());
 		Patient patient = patientRepository.getReferenceById(dto.patientId());
 		
