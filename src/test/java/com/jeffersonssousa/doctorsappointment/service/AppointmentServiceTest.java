@@ -3,11 +3,13 @@ package com.jeffersonssousa.doctorsappointment.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -27,79 +29,104 @@ import com.jeffersonssousa.doctorsappointment.repository.AppoitmentRepository;
 import com.jeffersonssousa.doctorsappointment.repository.DoctorRepository;
 import com.jeffersonssousa.doctorsappointment.repository.PatientRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @ExtendWith(MockitoExtension.class)
 public class AppointmentServiceTest {
-	
+
 	@Mock
 	private AppoitmentRepository appointmentRepository;
-	
+
 	@Mock
 	private DoctorRepository doctorRepository;
-	
+
 	@Mock
 	private PatientRepository patientRepository;
-	
+
 	@InjectMocks
 	private AppointmentService service;
-	
+
 	@Captor
 	private ArgumentCaptor<Appointment> appointmentCaptor;
-	
+
 	@Nested
-	class insert{
-		
+	class insert {
+
 		@Test
 		@DisplayName("Deve inserir uma consulta com sucesso")
 		void shouldCreateAAppointment() {
-			
-			//Arrange
+
+			// Arrange
 			LocalDateTime date = LocalDateTime.now().plusDays(1);
 			Doctor doctor = new Doctor();
 			Patient patient = new Patient();
 			AppointmentRequestDTO dto = new AppointmentRequestDTO(date, 1L, 1L, false);
-			
-			when(doctorRepository.getReferenceById(anyLong())).thenReturn(doctor);
-			when(patientRepository.getReferenceById(anyLong())).thenReturn(patient);
-			
-			//Act
+
+			when(doctorRepository.findById(anyLong())).thenReturn(Optional.of(doctor));
+			when(patientRepository.findById(anyLong())).thenReturn(Optional.of(patient));
+
+			// Act
 			service.insert(dto);
-			
-			//Assert 
-			verify(doctorRepository, times(1)).getReferenceById(anyLong());
-			verify(patientRepository, times(1)).getReferenceById(anyLong());
+
+			// Assert
+			verify(doctorRepository, times(1)).findById(anyLong());
+			verify(patientRepository, times(1)).findById(anyLong());
 			verify(appointmentRepository, times(1)).save(appointmentCaptor.capture());
-			
+
 			Appointment appointment = appointmentCaptor.getValue();
-			
-			
-			//Verify
+
+			// Verify
 			assertEquals(dto.appointmentDate(), appointment.getAppointmentDate());
 			assertEquals(30, appointment.getDurationInMinutes());
 			assertEquals(doctor.getDoctorId(), appointment.getDoctor().getDoctorId());
 			assertEquals(patient.getPatientId(), appointment.getPatient().getPatientId());
 		}
-		
-	
+
 		@Test
 		@DisplayName("Deve lançar exceção quando a data for no passado")
 		void shouldThrowExceptionWhenDateIsInThePast() {
-			
-			//Arrange
+
+			// Arrange
 			LocalDateTime date = LocalDateTime.now().minusDays(1);
 			AppointmentRequestDTO dto = new AppointmentRequestDTO(date, 1L, 1L, false);
-			
-			//Act
+
+			// Act
 			IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> service.insert(dto));
+
+			// Assert
+			assertEquals("A data tem que ser futura!!", e.getMessage());
+		}
+
+		@Test
+		@DisplayName("Deve lançar uma exceção caso o médico não tenha sido encontrado")
+		void shouldThrowExceptionWhenDoctorNotFound() {
+
+			//Arrange
+			LocalDateTime date = LocalDateTime.now().plusDays(1);
+			AppointmentRequestDTO dto = new AppointmentRequestDTO(date, 1L, 1L, false);
 			
-			//Assert
-			assertEquals("A data tem que ser futura!!", e.getMessage());	
+			when(doctorRepository.findById(1L)).thenReturn(Optional.empty());
+
+			// Act & Assert
+			EntityNotFoundException e = assertThrows(EntityNotFoundException.class, () -> service.insert(dto));
+			assertEquals("Médico não foi encontrado!!", e.getMessage());
 		}
 		
 		@Test
-		@DisplayName("Deve lançar uma exceção caso o médico ou o paciente não tenha sido encontrado")
-		void shouldThrowExceptionWhenDoctorOrPatientNotFound() {
+		@DisplayName("Deve lançar uma exceção caso o paciente não tenha sido encontrado")
+		void shouldThrowExceptionWhenPatientNotFound() {
+
+			//Arrange
+			LocalDateTime date = LocalDateTime.now().plusDays(1);
+			AppointmentRequestDTO dto = new AppointmentRequestDTO(date, 1L, 1L, false);
+			Doctor doctor = mock(Doctor.class);
 			
+			when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
+			when(patientRepository.findById(1L)).thenReturn(Optional.empty());
+
+			// Act & Assert
+			EntityNotFoundException e = assertThrows(EntityNotFoundException.class, () -> service.insert(dto));
+			assertEquals("Paciente não foi encontrado!!", e.getMessage());
 		}
-		
 	}
 }

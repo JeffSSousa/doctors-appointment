@@ -36,8 +36,8 @@ public class AppointmentService {
 		}
 		
 		
-		Doctor doctor = doctorRepository.getReferenceById(dto.doctorId());
-		Patient patient = patientRepository.getReferenceById(dto.patientId());
+		Doctor doctor = doctorRepository.findById(dto.doctorId()).orElseThrow(() -> new EntityNotFoundException("Médico não foi encontrado!!"));
+		Patient patient = patientRepository.findById(dto.patientId()).orElseThrow(() -> new EntityNotFoundException("Paciente não foi encontrado!!"));
 		
 		Appointment appointment = new Appointment(dto);
 		appointment.setDoctor(doctor);
