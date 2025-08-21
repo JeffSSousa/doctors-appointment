@@ -1,6 +1,7 @@
 package com.jeffersonssousa.doctorsappointment.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -80,12 +81,25 @@ public class AppointmentServiceTest {
 		
 	
 		@Test
-		@DisplayName("Deve ocorrer uma excessão caso a data for no passado")
-		void shouldThrowExceptionWhenDateIsBefore() {}
+		@DisplayName("Deve lançar exceção quando a data for no passado")
+		void shouldThrowExceptionWhenDateIsInThePast() {
+			
+			//Arrange
+			LocalDateTime date = LocalDateTime.now().minusDays(1);
+			AppointmentRequestDTO dto = new AppointmentRequestDTO(date, 1L, 1L, false);
+			
+			//Act
+			IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> service.insert(dto));
+			
+			//Assert
+			assertEquals("A data tem que ser futura!!", e.getMessage());	
+		}
 		
 		@Test
-		@DisplayName("Deve ocorrer uma excessão caso o medico/paciente não exista")
-		void shouldThrowExceptionWhenDoctorOrPatientNoExists() {}
+		@DisplayName("Deve lançar uma exceção caso o médico ou o paciente não tenha sido encontrado")
+		void shouldThrowExceptionWhenDoctorOrPatientNotFound() {
+			
+		}
 		
 	}
 }
