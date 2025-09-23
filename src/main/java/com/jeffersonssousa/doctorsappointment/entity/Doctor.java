@@ -1,14 +1,11 @@
 package com.jeffersonssousa.doctorsappointment.entity;
 
+import java.util.List;
 import java.util.Objects;
 
 import com.jeffersonssousa.doctorsappointment.dto.DoctorRequestDTO;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "tb_doctor")
@@ -22,7 +19,10 @@ public class Doctor {
     private String phone;
     private String crm; // Registro profissional
     private String specialty;
-    
+
+    @OneToMany(mappedBy = "doctor")
+    private List<Appointment> appointments;
+
 	public Doctor() {
 	}
 

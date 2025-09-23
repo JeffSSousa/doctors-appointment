@@ -1,15 +1,12 @@
 package com.jeffersonssousa.doctorsappointment.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 import com.jeffersonssousa.doctorsappointment.dto.PatientRequestDTO;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "tb_patient")
@@ -24,6 +21,9 @@ public class Patient {
 	private String sex;
 	private Integer weight;
 	private Double height;
+
+    @OneToMany(mappedBy = "patient")
+    private List<Appointment> appointments;
 	
 	public Patient() {
 	}
