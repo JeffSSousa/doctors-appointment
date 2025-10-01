@@ -22,7 +22,7 @@ public class DoctorServiceTest {
 	
 	@Mock
 	private DoctorRepository repository;
-	
+
 	@InjectMocks
 	private DoctorService service;
 	
@@ -32,22 +32,22 @@ public class DoctorServiceTest {
 	@Test
 	@DisplayName("Deve inserir um médico corretamente.")
 	void shouldCreateADoctor() {
-		
+
 		//Arrange
-		DoctorRequestDTO dto = new DoctorRequestDTO("Fulano", "fulano@email.com", "99999-9999", "5265-5", "Clinico Geral");
-		
+		Doctor entity = new Doctor(null,"Fulano", "fulano@email.com", "99999-9999", "5265-5", "Clinico Geral",null);
+
 		//Act
-		service.insert(dto);
-		
+		service.insert(entity);
+
 		//Assert & Verify
 		verify(repository, times(1)).save(doctorCaptor.capture());
 		Doctor doctor = doctorCaptor.getValue();
-		
-		assertEquals(dto.name(), doctor.getName());
-		assertEquals(dto.email(), doctor.getEmail());
-		assertEquals(dto.phone(), doctor.getPhone());
-		assertEquals(dto.crm(), doctor.getCrm());
-		assertEquals(dto.specialty(), doctor.getSpecialty());
-		
+
+		assertEquals(entity.getName(), doctor.getName());
+		assertEquals(entity.getEmail(), doctor.getEmail());
+		assertEquals(entity.getPhone(), doctor.getPhone());
+		assertEquals(entity.getCrm(), doctor.getCrm());
+		assertEquals(entity.getSpecialty(), doctor.getSpecialty());
+
 	}
 }
