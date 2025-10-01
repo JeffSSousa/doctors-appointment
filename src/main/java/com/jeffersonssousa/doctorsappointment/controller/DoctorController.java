@@ -1,6 +1,8 @@
 package com.jeffersonssousa.doctorsappointment.controller;
 
+import com.jeffersonssousa.doctorsappointment.controller.mappers.DoctorMapper;
 import com.jeffersonssousa.doctorsappointment.dto.DoctorResponseDTO;
+import com.jeffersonssousa.doctorsappointment.entity.Doctor;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,16 +20,24 @@ public class DoctorController {
 
 	@Autowired
 	private DoctorService service;
-	
+
+    @Autowired
+    private DoctorMapper doctorMapper;
+
 	@PostMapping
 	public ResponseEntity<Void> registerDoctor(@RequestBody @Valid DoctorRequestDTO dto){
-		service.insert(dto);
+        Doctor doctor = doctorMapper.toEntity(dto);
+        service.insert(doctor);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
     @GetMapping
     public ResponseEntity<List<DoctorResponseDTO>> findAll (){
-        List<DoctorResponseDTO> doctors = service.findAll();
+        List<DoctorResponseDTO> doctors = service.findAll()
+                                                    .stream()
+                                                    .map(doctorMapper::toResponseDTO)
+                                                    .toList();
+
         return ResponseEntity.ok().body(doctors);
     }
 
