@@ -38,33 +38,30 @@ public class PatientServiceTest {
 	void shouldCreateAPatient() {
 
 		// Arrange
-		PatientRequestDTO dto = new PatientRequestDTO(
-				"Ciclano", 
-				"999.999.999-99", 
-				LocalDate.parse("1999-05-08"),
-				"Masculino", 
-				72, 
-				1.62
-				);
-		
-		Patient savedPatient = new Patient(dto);
-		savedPatient.setPatientId(1L);
+        String name = "Ciclano";
+        String cpf = "999.999.999-99";
+        LocalDate birthDate = LocalDate.parse("1999-05-08");
+        String sex = "Masculino";
+        Integer weight = 72;
+        Double height = 1.62;
 
-		when(repository.save(any(Patient.class))).thenReturn(savedPatient);
+        Patient patient = new Patient(null, name, cpf, birthDate, sex, weight, height, null);
+
+		when(repository.save(any(Patient.class))).thenReturn(patient);
 
 		
 		// Act
-		Patient returnedPatient = service.insert(dto);
+		Patient returnedPatient = service.insert(patient);
 
 		
 		// Assert & Verify
 		verify(repository, times(1)).save(patientCaptor.capture());
 
-		assertEquals(dto.name(), returnedPatient.getName());
-		assertEquals(dto.cpf(), returnedPatient.getCpf());
-		assertEquals(dto.birthDate(), returnedPatient.getBirthDate());
-		assertEquals(dto.sex(), returnedPatient.getSex());
-		assertEquals(dto.weight(), returnedPatient.getWeight());
-		assertEquals(dto.height(), returnedPatient.getHeight());
+		assertEquals(patient.getName(), returnedPatient.getName());
+		assertEquals(patient.getCpf(), returnedPatient.getCpf());
+		assertEquals(patient.getBirthDate(), returnedPatient.getBirthDate());
+		assertEquals(patient.getSex(), returnedPatient.getSex());
+		assertEquals(patient.getWeight(), returnedPatient.getWeight());
+		assertEquals(patient.getHeight(), returnedPatient.getHeight());
 	}
 }
