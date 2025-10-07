@@ -2,6 +2,9 @@ package com.jeffersonssousa.doctorsappointment.controller;
 
 import java.util.List;
 
+import com.jeffersonssousa.doctorsappointment.controller.mappers.AppointmentMapper;
+import com.jeffersonssousa.doctorsappointment.entity.Appointment;
+import com.jeffersonssousa.doctorsappointment.entity.Doctor;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,17 +26,20 @@ public class AppointmentController {
 	
 	@Autowired
 	private AppointmentService service;
-	
+
+    @Autowired
+    private AppointmentMapper mapper;
+
 	@PostMapping
 	public ResponseEntity<Void> scheduleAppointment(@RequestBody @Valid AppointmentRequestDTO dto){
-		service.insert(dto);
+        Appointment appointment = mapper.toEntity(dto);
+		service.insert(appointment, dto.doctorId(), dto.patientId());
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<List<AppointmentResponseDTO>> listAppointmentByDoctor(@PathVariable Long id){
-		List<AppointmentResponseDTO> list = service.listAppointmentByDoctor(id);
+		List<AppointmentResponseDTO> list = service.listAppointmentByDoctor(id).stream().map(mapper::toDto).toList();
 		return ResponseEntity.ok().body(list);
 	}
-
 }

@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -52,6 +53,7 @@ public class AppointmentServiceTest {
 	@Nested
 	class insert {
 
+
 		@Test
 		@DisplayName("Deve inserir uma consulta com sucesso")
 		void shouldCreateAAppointment() {
@@ -61,26 +63,28 @@ public class AppointmentServiceTest {
 			Doctor doctor = new Doctor();
 			Patient patient = new Patient();
 			AppointmentRequestDTO dto = new AppointmentRequestDTO(date, 1L, 1L, false);
+            Appointment appointment = new Appointment(null, dto.appointmentDate(),null,dto.isReturn(),null,null);
 
 			when(doctorRepository.findById(anyLong())).thenReturn(Optional.of(doctor));
 			when(patientRepository.findById(anyLong())).thenReturn(Optional.of(patient));
 
 			// Act
-			service.insert(dto);
+			service.insert(appointment, dto.doctorId(), dto.patientId());
 
 			// Assert
 			verify(doctorRepository, times(1)).findById(anyLong());
 			verify(patientRepository, times(1)).findById(anyLong());
 			verify(appointmentRepository, times(1)).save(appointmentCaptor.capture());
 
-			Appointment appointment = appointmentCaptor.getValue();
+			Appointment capturedAppointment = appointmentCaptor.getValue();
 
 			// Verify
-			assertEquals(dto.appointmentDate(), appointment.getAppointmentDate());
-			assertEquals(30, appointment.getDurationInMinutes());
-			assertEquals(doctor.getDoctorId(), appointment.getDoctor().getDoctorId());
-			assertEquals(patient.getPatientId(), appointment.getPatient().getPatientId());
+			assertEquals(dto.appointmentDate(), capturedAppointment.getAppointmentDate());
+			assertEquals(30, capturedAppointment.getDurationInMinutes());
+			assertEquals(doctor.getDoctorId(), capturedAppointment.getDoctor().getDoctorId());
+			assertEquals(patient.getPatientId(), capturedAppointment.getPatient().getPatientId());
 		}
+
 
 		@Test
 		@DisplayName("Deve lançar exceção quando a data for no passado")
@@ -89,13 +93,15 @@ public class AppointmentServiceTest {
 			// Arrange
 			LocalDateTime date = LocalDateTime.now().minusDays(1);
 			AppointmentRequestDTO dto = new AppointmentRequestDTO(date, 1L, 1L, false);
+            Appointment appointment = new Appointment(null, dto.appointmentDate(),null,dto.isReturn(),null,null);
 
 			// Act
-			IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> service.insert(dto));
+			IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> service.insert(appointment, dto.doctorId(), dto.patientId()));
 
 			// Assert
 			assertEquals("A data tem que ser futura!!", e.getMessage());
 		}
+
 
 		@Test
 		@DisplayName("Deve lançar uma exceção caso o médico não tenha sido encontrado")
@@ -104,14 +110,15 @@ public class AppointmentServiceTest {
 			//Arrange
 			LocalDateTime date = LocalDateTime.now().plusDays(1);
 			AppointmentRequestDTO dto = new AppointmentRequestDTO(date, 1L, 1L, false);
+            Appointment appointment = new Appointment(null, dto.appointmentDate(),null,dto.isReturn(),null,null);
 			
 			when(doctorRepository.findById(1L)).thenReturn(Optional.empty());
 
 			// Act & Assert
-			EntityNotFoundException e = assertThrows(EntityNotFoundException.class, () -> service.insert(dto));
+			EntityNotFoundException e = assertThrows(EntityNotFoundException.class, () -> service.insert(appointment, dto.doctorId(), dto.patientId()));
 			assertEquals("Médico não foi encontrado!!", e.getMessage());
 		}
-		
+
 		@Test
 		@DisplayName("Deve lançar uma exceção caso o paciente não tenha sido encontrado")
 		void shouldThrowExceptionWhenPatientNotFound() {
@@ -119,13 +126,14 @@ public class AppointmentServiceTest {
 			//Arrange
 			LocalDateTime date = LocalDateTime.now().plusDays(1);
 			AppointmentRequestDTO dto = new AppointmentRequestDTO(date, 1L, 1L, false);
+            Appointment appointment = new Appointment(null, dto.appointmentDate(),null,dto.isReturn(),null,null);
 			Doctor doctor = mock(Doctor.class);
 			
 			when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
 			when(patientRepository.findById(1L)).thenReturn(Optional.empty());
 
 			// Act & Assert
-			EntityNotFoundException e = assertThrows(EntityNotFoundException.class, () -> service.insert(dto));
+			EntityNotFoundException e = assertThrows(EntityNotFoundException.class, () -> service.insert(appointment, dto.doctorId(), dto.patientId()));
 			assertEquals("Paciente não foi encontrado!!", e.getMessage());
 		}
 	}

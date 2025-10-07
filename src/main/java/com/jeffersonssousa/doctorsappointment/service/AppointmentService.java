@@ -29,48 +29,42 @@ public class AppointmentService {
 	@Autowired
 	private PatientRepository patientRepository;
 	
-	public void insert(AppointmentRequestDTO dto) {
+	public void insert(Appointment appointment, Long doctorId, Long patientId) {
 		
-		if(dto.appointmentDate().isBefore(LocalDateTime.now())) {
+		if(appointment.getAppointmentDate().isBefore(LocalDateTime.now())) {
 			throw new IllegalArgumentException("A data tem que ser futura!!");
 		}
-		
-		
-		Doctor doctor = doctorRepository.findById(dto.doctorId()).orElseThrow(() -> new EntityNotFoundException("Médico não foi encontrado!!"));
-		Patient patient = patientRepository.findById(dto.patientId()).orElseThrow(() -> new EntityNotFoundException("Paciente não foi encontrado!!"));
-		
-		Appointment appointment = new Appointment(dto);
-		appointment.setDoctor(doctor);
-		appointment.setPatient(patient);
+
+		Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new EntityNotFoundException("Médico não foi encontrado!!"));
+		Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new EntityNotFoundException("Paciente não foi encontrado!!"));
+
+        appointment.setDoctor(doctor);
+        appointment.setPatient(patient);
 		
 		if(appointment.isReturn()) {
 			appointment.setDurationInMinutes(15);
 		} else {
 			appointment.setDurationInMinutes(30);
 		}
-		
-		
+
 	    LocalDateTime startDateTime = appointment.getAppointmentDate();
 	    LocalDateTime endDateTime = startDateTime.plusMinutes(appointment.getDurationInMinutes());
 
-	    validateScheduleConflict(doctor, startDateTime, endDateTime);
+	    validateScheduleConflict(appointment.getDoctor(), startDateTime, endDateTime);
 		
 		appoitmentRepository.save(appointment);
-		
 	}
 
-	public List<AppointmentResponseDTO> listAppointmentByDoctor(Long id) {
+	public List<Appointment> listAppointmentByDoctor(Long id) {
 		Doctor doctor = doctorRepository.findById(id)
 				        .orElseThrow(() -> new EntityNotFoundException("Não foi encontrado um Doctor com esse id: " + id));
 		
-		List<AppointmentResponseDTO> list = appoitmentRepository.findAllByDoctor(doctor).stream().map(AppointmentResponseDTO::new).toList();
+		List<Appointment> list = appoitmentRepository.findAllByDoctor(doctor);
 		
 		return list;
 	}
 	
-	
-	
-	
+
 	private void validateScheduleConflict(Doctor doctor, LocalDateTime startDateTime, LocalDateTime endDateTime) {
 	    List<Appointment> appointments = appoitmentRepository.findAllByDoctorAndAppointmentDateBetween(
 	        doctor,
