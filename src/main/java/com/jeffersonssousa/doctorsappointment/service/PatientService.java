@@ -13,8 +13,7 @@ public class PatientService {
 	@Autowired
 	private PatientRepository patientRepository;
 	
-	public Patient insert(PatientRequestDTO dto) {
-		Patient patient = new Patient(dto);
+	public Patient insert(Patient patient) {
 		return patientRepository.save(patient);
 	}
 	
