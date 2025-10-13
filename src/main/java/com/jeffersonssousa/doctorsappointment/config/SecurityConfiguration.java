@@ -1,5 +1,7 @@
 package com.jeffersonssousa.doctorsappointment.config;
 
+import com.jeffersonssousa.doctorsappointment.security.CustomUserDetailsService;
+import com.jeffersonssousa.doctorsappointment.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -45,20 +47,22 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder encoder){
+    public UserDetailsService userDetailsService(UserService userService){
+//
+//        UserDetails user1 = User.builder()
+//                .username("user")
+//                .password(encoder.encode("1234567"))
+//                .roles("USER")
+//                .build();
+//
+//        UserDetails user2 = User.builder()
+//                .username("admin")
+//                .password(encoder.encode("1234567"))
+//                .roles("ADMIN")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(user1,user2);
 
-        UserDetails user1 = User.builder()
-                .username("user")
-                .password(encoder.encode("1234567"))
-                .roles("USER")
-                .build();
-
-        UserDetails user2 = User.builder()
-                .username("admin")
-                .password(encoder.encode("1234567"))
-                .roles("ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(user1,user2);
+    return new CustomUserDetailsService(userService);
     }
 }

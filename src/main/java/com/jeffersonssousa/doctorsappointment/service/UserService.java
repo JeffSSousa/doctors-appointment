@@ -1,6 +1,6 @@
 package com.jeffersonssousa.doctorsappointment.service;
 
-import com.jeffersonssousa.doctorsappointment.entity.User;
+import com.jeffersonssousa.doctorsappointment.entity.Login;
 import com.jeffersonssousa.doctorsappointment.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,13 +15,13 @@ public class UserService {
     @Autowired
     private PasswordEncoder encoder;
 
-    public void createUser (User user){
-        String password = user.getPassword();
-        user.setPassword(encoder.encode(password));
-        userRepository.save(user);
+    public void createUser (Login login){
+        String password = login.getPassword();
+        login.setPassword(encoder.encode(password));
+        userRepository.save(login);
     }
 
-    public User getByLogin(String login){
+    public Login getByLogin(String login){
         return userRepository.findByLogin(login);
     }
 

@@ -1,11 +1,11 @@
 package com.jeffersonssousa.doctorsappointment.controller.mappers;
 
 import com.jeffersonssousa.doctorsappointment.dto.UserRequestDTO;
-import com.jeffersonssousa.doctorsappointment.entity.User;
+import com.jeffersonssousa.doctorsappointment.entity.Login;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    User toEntity (UserRequestDTO dto);
+    Login toEntity (UserRequestDTO dto);
 }

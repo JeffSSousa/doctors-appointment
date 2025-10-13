@@ -2,7 +2,7 @@ package com.jeffersonssousa.doctorsappointment.controller;
 
 import com.jeffersonssousa.doctorsappointment.controller.mappers.UserMapper;
 import com.jeffersonssousa.doctorsappointment.dto.UserRequestDTO;
-import com.jeffersonssousa.doctorsappointment.entity.User;
+import com.jeffersonssousa.doctorsappointment.entity.Login;
 import com.jeffersonssousa.doctorsappointment.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,8 +21,8 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody UserRequestDTO dto){
-        User user = mapper.toEntity(dto);
-        service.createUser(user);
+        Login login = mapper.toEntity(dto);
+        service.createUser(login);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
