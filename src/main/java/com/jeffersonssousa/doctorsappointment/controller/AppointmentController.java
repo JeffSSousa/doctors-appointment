@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,7 @@ public class AppointmentController {
     private AppointmentMapper mapper;
 
 	@PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
 	public ResponseEntity<Void> scheduleAppointment(@RequestBody @Valid AppointmentRequestDTO dto){
         Appointment appointment = mapper.toEntity(dto);
 		service.insert(appointment, dto.doctorId(), dto.patientId());
@@ -38,6 +40,7 @@ public class AppointmentController {
 	}
 	
 	@GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<AppointmentResponseDTO>> listAppointmentByDoctor(@PathVariable Long id){
 		List<AppointmentResponseDTO> list = service.listAppointmentByDoctor(id).stream().map(mapper::toDto).toList();
 		return ResponseEntity.ok().body(list);
