@@ -1,7 +1,7 @@
 package com.jeffersonssousa.doctorsappointment.controller;
 
 import com.jeffersonssousa.doctorsappointment.controller.mappers.UserMapper;
-import com.jeffersonssousa.doctorsappointment.dto.UserRequestDTO;
+import com.jeffersonssousa.doctorsappointment.dto.user.UserRequestDTO;
 import com.jeffersonssousa.doctorsappointment.entity.Login;
 import com.jeffersonssousa.doctorsappointment.service.UserService;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;

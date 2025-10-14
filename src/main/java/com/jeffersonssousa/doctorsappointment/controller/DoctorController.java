@@ -1,7 +1,7 @@
 package com.jeffersonssousa.doctorsappointment.controller;
 
 import com.jeffersonssousa.doctorsappointment.controller.mappers.DoctorMapper;
-import com.jeffersonssousa.doctorsappointment.dto.DoctorResponseDTO;
+import com.jeffersonssousa.doctorsappointment.dto.doctor.DoctorResponseDTO;
 import com.jeffersonssousa.doctorsappointment.entity.Doctor;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.jeffersonssousa.doctorsappointment.dto.DoctorRequestDTO;
+import com.jeffersonssousa.doctorsappointment.dto.doctor.DoctorRequestDTO;
 import com.jeffersonssousa.doctorsappointment.service.DoctorService;
 
 import java.util.List;

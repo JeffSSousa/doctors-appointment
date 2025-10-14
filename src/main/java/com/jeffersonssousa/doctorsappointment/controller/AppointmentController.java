@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.jeffersonssousa.doctorsappointment.controller.mappers.AppointmentMapper;
 import com.jeffersonssousa.doctorsappointment.entity.Appointment;
-import com.jeffersonssousa.doctorsappointment.entity.Doctor;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jeffersonssousa.doctorsappointment.dto.AppointmentRequestDTO;
-import com.jeffersonssousa.doctorsappointment.dto.AppointmentResponseDTO;
+import com.jeffersonssousa.doctorsappointment.dto.appointment.AppointmentRequestDTO;
+import com.jeffersonssousa.doctorsappointment.dto.appointment.AppointmentResponseDTO;
 import com.jeffersonssousa.doctorsappointment.service.AppointmentService;
 
 @RestController

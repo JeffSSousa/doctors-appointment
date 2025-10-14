@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jeffersonssousa.doctorsappointment.dto.PatientRequestDTO;
+import com.jeffersonssousa.doctorsappointment.dto.patient.PatientRequestDTO;
 import com.jeffersonssousa.doctorsappointment.service.PatientService;
 
 @RestController

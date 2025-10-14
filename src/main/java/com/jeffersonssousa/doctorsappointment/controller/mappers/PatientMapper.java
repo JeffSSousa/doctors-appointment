@@ -1,7 +1,6 @@
 package com.jeffersonssousa.doctorsappointment.controller.mappers;
 
-import com.jeffersonssousa.doctorsappointment.dto.PatientRequestDTO;
-import com.jeffersonssousa.doctorsappointment.entity.Doctor;
+import com.jeffersonssousa.doctorsappointment.dto.patient.PatientRequestDTO;
 import com.jeffersonssousa.doctorsappointment.entity.Patient;
 import org.mapstruct.Mapper;
 

@@ -2,9 +2,6 @@ package com.jeffersonssousa.doctorsappointment.entity;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
-
-import com.jeffersonssousa.doctorsappointment.dto.PatientRequestDTO;
 
 import jakarta.persistence.*;
 import lombok.*;

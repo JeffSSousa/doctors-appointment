@@ -1,4 +1,4 @@
-package com.jeffersonssousa.doctorsappointment.dto;
+package com.jeffersonssousa.doctorsappointment.dto.appointment;
 
 import jakarta.validation.constraints.NotNull;
 

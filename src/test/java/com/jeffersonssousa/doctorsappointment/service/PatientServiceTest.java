@@ -17,7 +17,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.jeffersonssousa.doctorsappointment.dto.PatientRequestDTO;
 import com.jeffersonssousa.doctorsappointment.entity.Patient;
 import com.jeffersonssousa.doctorsappointment.repository.PatientRepository;
 

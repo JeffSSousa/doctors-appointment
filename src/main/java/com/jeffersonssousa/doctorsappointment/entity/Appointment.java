@@ -2,8 +2,6 @@ package com.jeffersonssousa.doctorsappointment.entity;
 
 import java.time.LocalDateTime;
 
-import com.jeffersonssousa.doctorsappointment.dto.AppointmentRequestDTO;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

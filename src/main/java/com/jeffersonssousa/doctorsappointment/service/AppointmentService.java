@@ -6,8 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jeffersonssousa.doctorsappointment.dto.AppointmentRequestDTO;
-import com.jeffersonssousa.doctorsappointment.dto.AppointmentResponseDTO;
 import com.jeffersonssousa.doctorsappointment.entity.Appointment;
 import com.jeffersonssousa.doctorsappointment.entity.Doctor;
 import com.jeffersonssousa.doctorsappointment.entity.Patient;

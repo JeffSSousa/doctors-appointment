@@ -1,4 +1,4 @@
-package com.jeffersonssousa.doctorsappointment.dto;
+package com.jeffersonssousa.doctorsappointment.dto.doctor;
 
 import com.jeffersonssousa.doctorsappointment.entity.Doctor;
 
