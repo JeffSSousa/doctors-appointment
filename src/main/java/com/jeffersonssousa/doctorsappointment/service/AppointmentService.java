@@ -59,9 +59,7 @@ public class AppointmentService {
 		Doctor doctor = doctorRepository.findById(id)
 				        .orElseThrow(() -> new EntityNotFoundException("Não foi encontrado um Doctor com esse id: " + id));
 		
-		List<Appointment> list = appoitmentRepository.findAllByDoctor(doctor);
-		
-		return list;
+		return appoitmentRepository.findAllByDoctor(doctor);
 	}
 	
 
