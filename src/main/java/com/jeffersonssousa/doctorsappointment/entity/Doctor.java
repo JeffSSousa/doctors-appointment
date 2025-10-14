@@ -29,12 +29,4 @@ public class Doctor {
     @OneToMany(mappedBy = "doctor")
     private List<Appointment> appointments;
 
-	public Doctor(DoctorRequestDTO dto) {
-		this.name = dto.name();
-		this.email = dto.email();
-		this.phone = dto.phone();
-		this.crm = dto.crm();
-		this.specialty = dto.specialty();
-	}
-
 }

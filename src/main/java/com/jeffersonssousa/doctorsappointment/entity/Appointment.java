@@ -39,9 +39,5 @@ public class Appointment {
 	@ManyToOne
 	@JoinColumn(name = "patient_id", nullable = false)
 	private Patient patient;
-	
-	public Appointment(AppointmentRequestDTO dto) {
-		this.appointmentDate = dto.appointmentDate();
-		this.isReturn = dto.isReturn();
-	}
+
 }

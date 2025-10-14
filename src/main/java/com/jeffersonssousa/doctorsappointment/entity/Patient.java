@@ -30,14 +30,4 @@ public class Patient {
 
     @OneToMany(mappedBy = "patient")
     private List<Appointment> appointments;
-
-	
-	public Patient(PatientRequestDTO dto) {
-		this.name = dto.name();
-		this.cpf = dto.cpf();
-		this.birthDate = dto.birthDate();
-		this.sex = dto.sex();
-		this.weight = dto.weight();
-		this.height = dto.height();
-	}
 }
