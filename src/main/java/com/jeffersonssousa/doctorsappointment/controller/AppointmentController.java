@@ -32,7 +32,7 @@ public class AppointmentController {
     private AppointmentMapper mapper;
 
 	@PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PreAuthorize("hasAnyRole('ADMIN','PATIENT')")
 	public ResponseEntity<Void> scheduleAppointment(@RequestBody @Valid AppointmentRequestDTO dto){
         Appointment appointment = mapper.toEntity(dto);
 		service.insert(appointment, dto.doctorId(), dto.patientId());
@@ -40,7 +40,7 @@ public class AppointmentController {
 	}
 	
 	@GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
 	public ResponseEntity<List<AppointmentResponseDTO>> listAppointmentByDoctor(@PathVariable Long id){
 		List<AppointmentResponseDTO> list = service.listAppointmentByDoctor(id).stream().map(mapper::toDto).toList();
 		return ResponseEntity.ok().body(list);

@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.jeffersonssousa.doctorsappointment.dto.DoctorRequestDTO;
@@ -25,6 +26,7 @@ public class DoctorController {
     private DoctorMapper doctorMapper;
 
 	@PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Void> registerDoctor(@RequestBody @Valid DoctorRequestDTO dto){
         Doctor doctor = doctorMapper.toEntity(dto);
         service.insert(doctor);
@@ -32,6 +34,7 @@ public class DoctorController {
 	}
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<DoctorResponseDTO>> findAll (){
         List<DoctorResponseDTO> doctors = service.findAll()
                                                     .stream()
