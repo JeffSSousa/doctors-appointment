@@ -2,34 +2,34 @@ package com.jeffersonssousa.doctorsappointment.security;
 
 import com.jeffersonssousa.doctorsappointment.entity.Login;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-public class CustomAuthentication implements Authentication {
+@RequiredArgsConstructor
+public class CustomAtuthentication implements Authentication {
 
-    @Autowired
-    private Login login;
-
-    public CustomAuthentication(Login user) {
-    }
+    private final Login login;
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
         return this.login
                 .getRoles()
                 .stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
 
     @Override
     public Object getCredentials() {
+
         return null;
     }
 
