@@ -32,7 +32,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         boolean passwordMatches = encoder.matches(passwordEntered, encryptedPassword);
 
-        if(passwordMatches) return new CustomAtuthentication(user);
+        if(passwordMatches) return new CustomAuthentication(user);
 
         throw new UsernameNotFoundException("Usuário e/ou senha incorretos");
     }

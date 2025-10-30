@@ -3,18 +3,16 @@ package com.jeffersonssousa.doctorsappointment.security;
 import com.jeffersonssousa.doctorsappointment.entity.Login;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
 @RequiredArgsConstructor
-public class CustomAtuthentication implements Authentication {
+public class CustomAuthentication implements Authentication {
 
     private final Login login;
 
