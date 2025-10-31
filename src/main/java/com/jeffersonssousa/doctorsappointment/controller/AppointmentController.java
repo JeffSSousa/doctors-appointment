@@ -44,4 +44,5 @@ public class AppointmentController {
 		List<AppointmentResponseDTO> list = service.listAppointmentByDoctor(id).stream().map(mapper::toDto).toList();
 		return ResponseEntity.ok().body(list);
 	}
+
 }
