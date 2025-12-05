@@ -17,6 +17,11 @@ public class ClientService {
 
 
     public Client save(Client client){
+
+        if(repository.findByClientId(client.getClientId()) != null){
+            throw new RuntimeException("Já Existe um Cliente com esse ClientId");
+        }
+
         String secretCrip = encoder.encode(client.getClientSecret());
         client.setClientSecret(secretCrip);
         return repository.save(client);
