@@ -26,9 +26,7 @@ public class CustomAuthentication implements Authentication {
     }
 
     @Override
-    public Object getCredentials() {
-
-        return null;
+    public Object getCredentials() { return null;
     }
 
     @Override

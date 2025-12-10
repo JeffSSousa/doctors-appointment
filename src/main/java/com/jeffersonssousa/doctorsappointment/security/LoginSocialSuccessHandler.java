@@ -57,5 +57,4 @@ public class LoginSocialSuccessHandler extends SavedRequestAwareAuthenticationSu
         userService.createUser(login);
         return login;
     }
-
 }
