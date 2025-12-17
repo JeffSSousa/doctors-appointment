@@ -29,7 +29,7 @@ public class JwtCustomAuthenticationFilter extends OncePerRequestFilter {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (deveConverter(authentication)){
+        if (shouldConvertJwt(authentication)){
             String login = authentication.getName();
             Login user = userService.getByLogin(login);
             if (user != null){
@@ -42,7 +42,7 @@ public class JwtCustomAuthenticationFilter extends OncePerRequestFilter {
 
     }
 
-    private boolean deveConverter(Authentication authentication){
+    private boolean shouldConvertJwt(Authentication authentication){
         return authentication != null &&  authentication instanceof JwtAuthenticationToken;
     }
 

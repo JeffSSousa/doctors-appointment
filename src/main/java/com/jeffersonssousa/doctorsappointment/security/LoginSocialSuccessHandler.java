@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LoginSocialSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
-    private static final String SENHA_PADRAO = "1234567";
+    private static final String DEFAULT_PASSWORD = "1234567";
 
     private final UserService userService;
 
@@ -51,7 +51,7 @@ public class LoginSocialSuccessHandler extends SavedRequestAwareAuthenticationSu
         Login login = new Login();
         login.setEmail(email);
         login.setLogin(email);
-        login.setPassword(SENHA_PADRAO);
+        login.setPassword(DEFAULT_PASSWORD);
         login.setRoles(List.of("PACIENTE"));
 
         userService.createUser(login);
