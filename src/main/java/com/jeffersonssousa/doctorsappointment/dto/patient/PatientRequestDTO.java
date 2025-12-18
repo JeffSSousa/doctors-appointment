@@ -1,5 +1,6 @@
 package com.jeffersonssousa.doctorsappointment.dto.patient;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -15,12 +16,8 @@ public record PatientRequestDTO(@NotBlank
 								String cpf,
                                 @NotNull
 								LocalDate birthDate,
+                                @Email
                                 @NotBlank
-                                @Size(max = 9)
-								String sex,
-                                @NotNull
-								Integer weight,
-                                @NotNull
-								Double height) {
+								String email) {
 
 }

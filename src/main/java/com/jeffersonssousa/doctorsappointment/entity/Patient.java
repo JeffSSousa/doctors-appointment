@@ -19,11 +19,9 @@ public class Patient {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long patientId;
 	private String name;
+    private String email;
 	private String cpf;
 	private LocalDate birthDate;
-	private String sex;
-	private Integer weight;
-	private Double height;
 
     @OneToMany(mappedBy = "patient")
     private List<Appointment> appointments;

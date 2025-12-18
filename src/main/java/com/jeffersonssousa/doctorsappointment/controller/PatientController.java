@@ -26,7 +26,7 @@ public class PatientController {
     private PatientMapper mapper;
 	
 	@PostMapping
-    @PreAuthorize("hasRole('ADMIN', 'RECEPTIONIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'RECEPTIONIST')")
 	public ResponseEntity<Void> registerPatient(@RequestBody @Valid PatientRequestDTO dto){
         Patient patient = mapper.toEntity(dto);
         service.insert(patient);
