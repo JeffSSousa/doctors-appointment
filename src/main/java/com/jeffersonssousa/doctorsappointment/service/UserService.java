@@ -16,6 +16,15 @@ public class UserService {
     private PasswordEncoder encoder;
 
     public void createUser (Login login){
+
+        if(userRepository.findByLogin(login.getLogin()) != null) {
+            throw new IllegalArgumentException("Já existe um usuário com esse Login. Tente Novamente!");
+        }
+
+        if(userRepository.findByEmail(login.getEmail()) != null) {
+            throw new IllegalArgumentException("Já existe um usuário com esse e-mail, tente novamente!!");
+        }
+
         String password = login.getPassword();
         login.setPassword(encoder.encode(password));
         userRepository.save(login);
