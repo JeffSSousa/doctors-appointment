@@ -28,4 +28,7 @@ public class Login {
     @Column(columnDefinition = "varchar[]")
     private List<String> roles;
 
+    @OneToOne(mappedBy = "login")
+    private Patient patient;
+
 }

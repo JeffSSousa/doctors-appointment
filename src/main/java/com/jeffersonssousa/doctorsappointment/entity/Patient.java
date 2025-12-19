@@ -23,6 +23,12 @@ public class Patient {
 	private String cpf;
 	private LocalDate birthDate;
 
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    private Login login;
+
     @OneToMany(mappedBy = "patient")
     private List<Appointment> appointments;
+
+
 }
