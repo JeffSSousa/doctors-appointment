@@ -1,4 +1,4 @@
-package com.jeffersonssousa.doctorsappointment.dto.user;
+package com.jeffersonssousa.doctorsappointment.dto.register;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -14,5 +14,4 @@ public record UserRequestDTO(
         @NotBlank(message = "Campo Obrigatorio")
         String password,
         List<String> roles) {
-
 }

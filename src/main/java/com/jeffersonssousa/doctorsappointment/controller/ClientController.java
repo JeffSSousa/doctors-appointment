@@ -1,7 +1,7 @@
 package com.jeffersonssousa.doctorsappointment.controller;
 
 import com.jeffersonssousa.doctorsappointment.controller.mappers.ClientMapper;
-import com.jeffersonssousa.doctorsappointment.dto.ClientRequestDTO;
+import com.jeffersonssousa.doctorsappointment.dto.register.ClientRequestDTO;
 import com.jeffersonssousa.doctorsappointment.entity.Client;
 import com.jeffersonssousa.doctorsappointment.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
