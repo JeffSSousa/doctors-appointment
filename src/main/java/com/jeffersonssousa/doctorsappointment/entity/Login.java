@@ -31,4 +31,7 @@ public class Login {
     @OneToOne(mappedBy = "login")
     private Patient patient;
 
+    @OneToOne(mappedBy = "login")
+    private Doctor doctor;
+
 }
