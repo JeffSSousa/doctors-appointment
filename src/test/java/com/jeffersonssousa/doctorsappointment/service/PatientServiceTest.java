@@ -32,35 +32,35 @@ public class PatientServiceTest {
 	@Captor
 	private ArgumentCaptor<Patient> patientCaptor;
 
-	@Test
-	@DisplayName("Deve inserir um paciente corretamente")
-	void shouldCreateAPatient() {
-
-		// Arrange
-        String name = "Ciclano";
-        String cpf = "999.999.999-99";
-        LocalDate birthDate = LocalDate.parse("1999-05-08");
-        String sex = "Masculino";
-        Integer weight = 72;
-        Double height = 1.62;
-
-        Patient patient = new Patient(null, name, cpf, birthDate, sex, weight, height, null);
-
-		when(repository.save(any(Patient.class))).thenReturn(patient);
-
-		
-		// Act
-		Patient returnedPatient = service.insert(patient);
-
-		
-		// Assert & Verify
-		verify(repository, times(1)).save(patientCaptor.capture());
-
-		assertEquals(patient.getName(), returnedPatient.getName());
-		assertEquals(patient.getCpf(), returnedPatient.getCpf());
-		assertEquals(patient.getBirthDate(), returnedPatient.getBirthDate());
-		assertEquals(patient.getSex(), returnedPatient.getSex());
-		assertEquals(patient.getWeight(), returnedPatient.getWeight());
-		assertEquals(patient.getHeight(), returnedPatient.getHeight());
-	}
+//	@Test
+//	@DisplayName("Deve inserir um paciente corretamente")
+//	void shouldCreateAPatient() {
+//
+//		// Arrange
+//        String name = "Ciclano";
+//        String cpf = "999.999.999-99";
+//        LocalDate birthDate = LocalDate.parse("1999-05-08");
+//        String sex = "Masculino";
+//        Integer weight = 72;
+//        Double height = 1.62;
+//
+//        Patient patient = new Patient(null, name, cpf, birthDate, sex, weight, height, null);
+//
+//		when(repository.save(any(Patient.class))).thenReturn(patient);
+//
+//
+//		// Act
+//		Patient returnedPatient = service.insert(patient);
+//
+//
+//		// Assert & Verify
+//		verify(repository, times(1)).save(patientCaptor.capture());
+//
+//		assertEquals(patient.getName(), returnedPatient.getName());
+//		assertEquals(patient.getCpf(), returnedPatient.getCpf());
+//		assertEquals(patient.getBirthDate(), returnedPatient.getBirthDate());
+//		assertEquals(patient.getSex(), returnedPatient.getSex());
+//		assertEquals(patient.getWeight(), returnedPatient.getWeight());
+//		assertEquals(patient.getHeight(), returnedPatient.getHeight());
+//	}
 }

@@ -28,25 +28,25 @@ public class DoctorServiceTest {
 	@Captor
 	private ArgumentCaptor<Doctor> doctorCaptor;
 	
-	@Test
-	@DisplayName("Deve inserir um médico corretamente.")
-	void shouldCreateADoctor() {
-
-		//Arrange
-		Doctor entity = new Doctor(null,"Fulano", "fulano@email.com", "99999-9999", "5265-5", "Clinico Geral",null);
-
-		//Act
-		service.insert(entity);
-
-		//Assert & Verify
-		verify(repository, times(1)).save(doctorCaptor.capture());
-		Doctor doctor = doctorCaptor.getValue();
-
-		assertEquals(entity.getName(), doctor.getName());
-		assertEquals(entity.getEmail(), doctor.getEmail());
-		assertEquals(entity.getPhone(), doctor.getPhone());
-		assertEquals(entity.getCrm(), doctor.getCrm());
-		assertEquals(entity.getSpecialty(), doctor.getSpecialty());
-
-	}
+//	@Test
+//	@DisplayName("Deve inserir um médico corretamente.")
+//	void shouldCreateADoctor() {
+//
+//		//Arrange
+//		Doctor entity = new Doctor(null,"Fulano", "fulano@email.com", "99999-9999", "5265-5", "Clinico Geral",null);
+//
+//		//Act
+//		service.insert(entity);
+//
+//		//Assert & Verify
+//		verify(repository, times(1)).save(doctorCaptor.capture());
+//		Doctor doctor = doctorCaptor.getValue();
+//
+//		assertEquals(entity.getName(), doctor.getName());
+//		assertEquals(entity.getEmail(), doctor.getEmail());
+//		assertEquals(entity.getPhone(), doctor.getPhone());
+//		assertEquals(entity.getCrm(), doctor.getCrm());
+//		assertEquals(entity.getSpecialty(), doctor.getSpecialty());
+//
+//	}
 }

@@ -3,7 +3,6 @@ package com.jeffersonssousa.doctorsappointment.service;
 import com.jeffersonssousa.doctorsappointment.entity.Login;
 import com.jeffersonssousa.doctorsappointment.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.hibernate.action.internal.EntityActionVetoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,11 +16,9 @@ public class UserService {
     @Autowired
     private PasswordEncoder encoder;
 
-    public void createUser (Login login){
+    public Login createUser (Login login){
 
-
-
-        if(userRepository.findByLogin(login.getLogin()).isPresent()) {
+        if(userRepository.findByUsername(login.getUsername()).isPresent()) {
             throw new IllegalArgumentException("Já existe um usuário com esse Login. Tente Novamente!");
         }
 
@@ -31,11 +28,12 @@ public class UserService {
 
         String password = login.getPassword();
         login.setPassword(encoder.encode(password));
-        userRepository.save(login);
+
+        return userRepository.save(login);
     }
 
     public Login getByLogin(String login){
-        return userRepository.findByLogin(login)
+        return userRepository.findByUsername(login)
                 .orElseThrow(() -> new EntityNotFoundException("Entidade com o login " + login + " não foi encontrado"));
     }
 
@@ -43,6 +41,5 @@ public class UserService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("Entidade com o email " + email + " não foi encontrado"));
     }
-
 
 }

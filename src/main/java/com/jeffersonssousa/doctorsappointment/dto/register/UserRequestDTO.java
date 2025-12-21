@@ -7,7 +7,7 @@ import java.util.List;
 
 public record UserRequestDTO(
         @NotBlank(message = "Campo Obrigatorio")
-        String login,
+        String username,
         @Email(message = "Email invalido")
         @NotBlank(message = "Campo Obrigatorio")
         String email,
