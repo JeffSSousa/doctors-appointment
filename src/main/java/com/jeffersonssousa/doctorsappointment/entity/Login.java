@@ -18,7 +18,7 @@ public class Login {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID userId;
 
-    private String login;
+    private String username;
 
     private String email;
 

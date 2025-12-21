@@ -50,7 +50,7 @@ public class LoginSocialSuccessHandler extends SavedRequestAwareAuthenticationSu
     private Login registerUser(String email) {
         Login login = new Login();
         login.setEmail(email);
-        login.setLogin(email);
+        login.setUsername(email);
         login.setPassword(DEFAULT_PASSWORD);
         login.setRoles(List.of("PACIENTE"));
 
