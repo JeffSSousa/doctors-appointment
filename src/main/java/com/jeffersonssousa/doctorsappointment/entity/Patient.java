@@ -19,7 +19,6 @@ public class Patient {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long patientId;
 	private String name;
-    private String email;
 	private String cpf;
 	private LocalDate birthDate;
 

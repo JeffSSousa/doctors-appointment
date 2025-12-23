@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.jeffersonssousa.doctorsappointment.entity.Patient;
 import com.jeffersonssousa.doctorsappointment.repository.PatientRepository;
 
+import java.util.UUID;
+
 @Service
 public class PatientService {
 
@@ -20,10 +22,9 @@ public class PatientService {
 	
 	public Patient insert(Patient patient) {
 
-        Login user = userRepository.findByEmail(patient.getEmail())
-                .orElseThrow(() -> new EntityNotFoundException("Não foi encontrado usuario com esse email"));
+        UUID userId = patient.getLogin().getUserId();
 
-        if(patientRepository.existsByLogin_UserId(user.getUserId())){
+        if(patientRepository.existsByLogin_UserId(userId)){
             throw new IllegalArgumentException("Já existe um paciente vinculado com esse acesso");
         }
 
@@ -31,7 +32,6 @@ public class PatientService {
             throw new IllegalArgumentException("Já existe um paciente cadastrado com esse CPF");
         }
 
-        patient.setLogin(user);
         return patientRepository.save(patient);
 	}
 }

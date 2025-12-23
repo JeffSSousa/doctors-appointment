@@ -18,7 +18,7 @@ public class Doctor {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long doctorId;
 	private String name;
-	private String email;
+	private String email; // apagar email, user já recebe
     private String phone;
     private String crm; // Registro profissional
     private String specialty;
