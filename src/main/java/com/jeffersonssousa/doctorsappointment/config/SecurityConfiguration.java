@@ -41,6 +41,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers("/login").permitAll();
                     authorize.requestMatchers(HttpMethod.POST, "/user/**").permitAll();
+                    authorize.requestMatchers(HttpMethod.POST, "/register/patient").permitAll();
 
                     authorize.anyRequest().authenticated();
                 })
