@@ -10,6 +10,7 @@ import com.jeffersonssousa.doctorsappointment.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ public class AuthController {
     private RegisterMapper mapper;
 
     @PostMapping("/doctor")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> registerDoctor(@RequestBody RegisterDoctorDTO dto){
 
         Login user = mapper.toUserDoctor(dto);

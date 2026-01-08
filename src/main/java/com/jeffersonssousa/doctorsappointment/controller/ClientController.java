@@ -29,6 +29,7 @@ public class ClientController {
     }
 
     @GetMapping("/{clientId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Client> findByClientId(@PathVariable String clientId){
         var client = service.findByClientId(clientId);
         return ResponseEntity.ok().body(client);
