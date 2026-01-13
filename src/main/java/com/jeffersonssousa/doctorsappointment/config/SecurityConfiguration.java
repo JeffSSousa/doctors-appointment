@@ -47,7 +47,11 @@ public class SecurityConfiguration {
                 .oauth2Login(oauth2 ->{
                     oauth2
                             .loginPage("/login")
-                            .successHandler(successHandler);
+                            .successHandler(successHandler)
+                            .failureHandler((request, response, exception) -> {
+                                System.out.println("OAUTH2 ERROR !!");
+                                exception.printStackTrace();
+                            });
                 })
                 .oauth2ResourceServer(oAuth2RS -> oAuth2RS.jwt(Customizer.withDefaults()))
                 .addFilterAfter(jwtCustomAuthenticationFilter, BearerTokenAuthenticationFilter.class)
