@@ -1,9 +1,7 @@
 package com.jeffersonssousa.doctorsappointment.service;
 
-import com.jeffersonssousa.doctorsappointment.entity.Login;
-import com.jeffersonssousa.doctorsappointment.exception.PatientAlreadyLinkedException;
+import com.jeffersonssousa.doctorsappointment.exception.business.PatientAlreadyLinkedException;
 import com.jeffersonssousa.doctorsappointment.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

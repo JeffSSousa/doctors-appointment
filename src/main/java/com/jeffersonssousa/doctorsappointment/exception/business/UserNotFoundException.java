@@ -1,4 +1,4 @@
-package com.jeffersonssousa.doctorsappointment.exception;
+package com.jeffersonssousa.doctorsappointment.exception.business;
 
 public class UserNotFoundException extends RuntimeException {
 

@@ -1,11 +1,10 @@
 package com.jeffersonssousa.doctorsappointment.service;
 
 import com.jeffersonssousa.doctorsappointment.entity.Login;
-import com.jeffersonssousa.doctorsappointment.exception.EmailAlreadyInUseException;
-import com.jeffersonssousa.doctorsappointment.exception.UserAlreadyExistsException;
-import com.jeffersonssousa.doctorsappointment.exception.UserNotFoundException;
+import com.jeffersonssousa.doctorsappointment.exception.business.EmailAlreadyInUseException;
+import com.jeffersonssousa.doctorsappointment.exception.business.UserAlreadyExistsException;
+import com.jeffersonssousa.doctorsappointment.exception.business.UserNotFoundException;
 import com.jeffersonssousa.doctorsappointment.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

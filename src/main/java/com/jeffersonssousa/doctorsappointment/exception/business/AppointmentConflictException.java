@@ -1,4 +1,4 @@
-package com.jeffersonssousa.doctorsappointment.exception;
+package com.jeffersonssousa.doctorsappointment.exception.business;
 
 public class AppointmentConflictException extends RuntimeException {
 

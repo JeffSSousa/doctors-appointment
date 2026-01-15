@@ -1,7 +1,7 @@
 package com.jeffersonssousa.doctorsappointment.service;
 
 import com.jeffersonssousa.doctorsappointment.entity.Client;
-import com.jeffersonssousa.doctorsappointment.exception.ClientAlreadyExistsException;
+import com.jeffersonssousa.doctorsappointment.exception.business.ClientAlreadyExistsException;
 import com.jeffersonssousa.doctorsappointment.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

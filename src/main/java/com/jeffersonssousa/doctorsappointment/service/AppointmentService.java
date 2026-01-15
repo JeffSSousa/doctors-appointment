@@ -3,9 +3,9 @@ package com.jeffersonssousa.doctorsappointment.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.jeffersonssousa.doctorsappointment.exception.AppointmentConflictException;
-import com.jeffersonssousa.doctorsappointment.exception.InvalidAppointmentDateException;
-import com.jeffersonssousa.doctorsappointment.exception.UserNotFoundException;
+import com.jeffersonssousa.doctorsappointment.exception.business.AppointmentConflictException;
+import com.jeffersonssousa.doctorsappointment.exception.business.InvalidAppointmentDateException;
+import com.jeffersonssousa.doctorsappointment.exception.business.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +15,6 @@ import com.jeffersonssousa.doctorsappointment.entity.Patient;
 import com.jeffersonssousa.doctorsappointment.repository.AppoitmentRepository;
 import com.jeffersonssousa.doctorsappointment.repository.DoctorRepository;
 import com.jeffersonssousa.doctorsappointment.repository.PatientRepository;
-
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class AppointmentService {

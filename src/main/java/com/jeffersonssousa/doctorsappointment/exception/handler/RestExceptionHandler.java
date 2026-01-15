@@ -1,6 +1,6 @@
-package com.jeffersonssousa.doctorsappointment.exception;
+package com.jeffersonssousa.doctorsappointment.exception.handler;
 
-import jakarta.persistence.EntityNotFoundException;
+import com.jeffersonssousa.doctorsappointment.exception.business.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

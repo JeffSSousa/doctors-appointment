@@ -1,6 +1,6 @@
 package com.jeffersonssousa.doctorsappointment.service;
 
-import com.jeffersonssousa.doctorsappointment.exception.DoctorAlreadyLinkedException;
+import com.jeffersonssousa.doctorsappointment.exception.business.DoctorAlreadyLinkedException;
 import com.jeffersonssousa.doctorsappointment.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

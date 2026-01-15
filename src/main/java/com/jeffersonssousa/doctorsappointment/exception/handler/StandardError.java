@@ -1,4 +1,4 @@
-package com.jeffersonssousa.doctorsappointment.exception;
+package com.jeffersonssousa.doctorsappointment.exception.handler;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
