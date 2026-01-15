@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -37,9 +39,8 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("Entidade com o login " + login + " não foi encontrado"));
     }
 
-    public Login getByEmail(String email){
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("Entidade com o email " + email + " não foi encontrado"));
+    public Optional<Login> getByEmail(String email){
+        return userRepository.findByEmail(email);
     }
 
 }

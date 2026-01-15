@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -32,11 +33,10 @@ public class LoginSocialSuccessHandler extends SavedRequestAwareAuthenticationSu
 
         String email = oAuth2User.getAttribute("email");
 
-        Login login = userService.getByEmail(email);
+        Login login = userService
+                        .getByEmail(email)
+                        .orElseGet(() -> registerUser(email));
 
-        if (login == null) {
-            login = registerUser(email);
-        }
 
         authentication = new CustomAuthentication(login);
 
@@ -49,11 +49,15 @@ public class LoginSocialSuccessHandler extends SavedRequestAwareAuthenticationSu
     private Login registerUser(String email) {
         Login login = new Login();
         login.setEmail(email);
-        login.setUsername(email);
+        login.setUsername(extractUsername(email));
         login.setPassword(DEFAULT_PASSWORD);
         login.setRoles(List.of("PACIENTE"));
 
         userService.createUser(login);
         return login;
+    }
+
+    private String extractUsername(String email){
+        return email.substring(0, email.indexOf("@"));
     }
 }
