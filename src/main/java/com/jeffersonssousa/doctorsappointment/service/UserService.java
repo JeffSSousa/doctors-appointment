@@ -1,6 +1,9 @@
 package com.jeffersonssousa.doctorsappointment.service;
 
 import com.jeffersonssousa.doctorsappointment.entity.Login;
+import com.jeffersonssousa.doctorsappointment.exception.EmailAlreadyInUseException;
+import com.jeffersonssousa.doctorsappointment.exception.UserAlreadyExistsException;
+import com.jeffersonssousa.doctorsappointment.exception.UserNotFoundException;
 import com.jeffersonssousa.doctorsappointment.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +24,11 @@ public class UserService {
     public Login createUser (Login login){
 
         if(userRepository.findByUsername(login.getUsername()).isPresent()) {
-            throw new IllegalArgumentException("Já existe um usuário com esse Login. Tente Novamente!");
+            throw new UserAlreadyExistsException("Já existe um usuário com esse username. Tente Novamente!");
         }
 
         if(userRepository.findByEmail(login.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Já existe um usuário com esse e-mail, tente novamente!!");
+            throw new EmailAlreadyInUseException("Já existe um usuário com esse e-mail, tente novamente!!");
         }
 
         String password = login.getPassword();
@@ -36,7 +39,7 @@ public class UserService {
 
     public Login getByLogin(String login){
         return userRepository.findByUsername(login)
-                .orElseThrow(() -> new EntityNotFoundException("Entidade com o login " + login + " não foi encontrado"));
+                .orElseThrow(() -> new UserNotFoundException("Entidade com o login " + login + " não foi encontrado"));
     }
 
     public Optional<Login> getByEmail(String email){

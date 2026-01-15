@@ -1,6 +1,7 @@
 package com.jeffersonssousa.doctorsappointment.service;
 
 import com.jeffersonssousa.doctorsappointment.entity.Login;
+import com.jeffersonssousa.doctorsappointment.exception.PatientAlreadyLinkedException;
 import com.jeffersonssousa.doctorsappointment.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +26,11 @@ public class PatientService {
         UUID userId = patient.getLogin().getUserId();
 
         if(patientRepository.existsByLogin_UserId(userId)){
-            throw new IllegalArgumentException("Já existe um paciente vinculado com esse acesso");
+            throw new PatientAlreadyLinkedException("Já existe um paciente vinculado com esse acesso");
         }
 
         if(patientRepository.existsByCpf(patient.getCpf())){
-            throw new IllegalArgumentException("Já existe um paciente cadastrado com esse CPF");
+            throw new PatientAlreadyLinkedException("Já existe um paciente cadastrado com esse CPF");
         }
 
         return patientRepository.save(patient);

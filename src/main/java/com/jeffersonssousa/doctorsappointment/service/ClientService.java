@@ -1,6 +1,7 @@
 package com.jeffersonssousa.doctorsappointment.service;
 
 import com.jeffersonssousa.doctorsappointment.entity.Client;
+import com.jeffersonssousa.doctorsappointment.exception.ClientAlreadyExistsException;
 import com.jeffersonssousa.doctorsappointment.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +20,7 @@ public class ClientService {
     public Client save(Client client){
 
         if(repository.findByClientId(client.getClientId()) != null){
-            throw new RuntimeException("Já Existe um Cliente com esse ClientId");
+            throw new ClientAlreadyExistsException("Já Existe um Cliente com o ClientId" + client.getClientId());
         }
 
         String secretCrip = encoder.encode(client.getClientSecret());

@@ -1,5 +1,6 @@
 package com.jeffersonssousa.doctorsappointment.service;
 
+import com.jeffersonssousa.doctorsappointment.exception.DoctorAlreadyLinkedException;
 import com.jeffersonssousa.doctorsappointment.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class DoctorService {
         UUID userId = doctor.getLogin().getUserId();
 
         if(doctorRepository.existsByLogin_UserId(userId)){
-            throw new IllegalArgumentException("Já existe um doutor vinculado com esse acesso");
+            throw new DoctorAlreadyLinkedException("Já existe um doutor vinculado com esse acesso");
         }
 
         doctorRepository.save(doctor);

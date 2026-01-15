@@ -3,6 +3,9 @@ package com.jeffersonssousa.doctorsappointment.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.jeffersonssousa.doctorsappointment.exception.AppointmentConflictException;
+import com.jeffersonssousa.doctorsappointment.exception.InvalidAppointmentDateException;
+import com.jeffersonssousa.doctorsappointment.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,11 +33,11 @@ public class AppointmentService {
 	public void insert(Appointment appointment, Long doctorId, Long patientId) {
 		
 		if(appointment.getAppointmentDate().isBefore(LocalDateTime.now())) {
-			throw new IllegalArgumentException("A data tem que ser futura!!");
+			throw new InvalidAppointmentDateException("A data tem que ser futura!!");
 		}
 
-		Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new EntityNotFoundException("Médico não foi encontrado!!"));
-		Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new EntityNotFoundException("Paciente não foi encontrado!!"));
+		Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new UserNotFoundException("Médico não foi encontrado!!"));
+		Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new UserNotFoundException("Paciente não foi encontrado!!"));
 
         appointment.setDoctor(doctor);
         appointment.setPatient(patient);
@@ -55,7 +58,7 @@ public class AppointmentService {
 
 	public List<Appointment> listAppointmentByDoctor(Long id) {
 		Doctor doctor = doctorRepository.findById(id)
-				        .orElseThrow(() -> new EntityNotFoundException("Não foi encontrado um Doctor com esse id: " + id));
+				        .orElseThrow(() -> new UserNotFoundException("Não foi encontrado um Doctor com esse id: " + id));
 		
 		return appoitmentRepository.findAllByDoctor(doctor);
 	}
@@ -77,7 +80,7 @@ public class AppointmentService {
 	        ));
 
 	    if (hasConflict) {
-	        throw new IllegalArgumentException("Já existe uma consulta para este médico nesse horário.");
+	        throw new AppointmentConflictException("Já existe uma consulta para este médico nesse horário.");
 	    }
 	}
 
