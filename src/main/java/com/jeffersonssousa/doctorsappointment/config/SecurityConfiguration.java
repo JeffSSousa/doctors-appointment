@@ -38,7 +38,7 @@ public class SecurityConfiguration {
                  configurer.loginPage("/login");
                 })
                 .authorizeHttpRequests(authorize -> {
-                    authorize.requestMatchers("/login").permitAll();
+                    authorize.requestMatchers("/login", "/").permitAll();
                     authorize.requestMatchers(HttpMethod.POST, "/user/**").permitAll();
                     authorize.requestMatchers(HttpMethod.POST, "/register/patient").permitAll();
 
