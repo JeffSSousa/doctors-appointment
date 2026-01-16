@@ -51,7 +51,7 @@ public class LoginSocialSuccessHandler extends SavedRequestAwareAuthenticationSu
         login.setEmail(email);
         login.setUsername(extractUsername(email));
         login.setPassword(DEFAULT_PASSWORD);
-        login.setRoles(List.of("PACIENTE"));
+        login.setRoles(List.of("PACIENT"));
 
         userService.createUser(login);
         return login;
