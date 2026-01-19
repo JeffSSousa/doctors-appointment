@@ -4,12 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -28,15 +26,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.jeffersonssousa.doctorsappointment.dto.appointment.AppointmentRequestDTO;
 import com.jeffersonssousa.doctorsappointment.entity.Appointment;
 import com.jeffersonssousa.doctorsappointment.entity.Doctor;
 import com.jeffersonssousa.doctorsappointment.entity.Patient;
 import com.jeffersonssousa.doctorsappointment.repository.AppoitmentRepository;
 import com.jeffersonssousa.doctorsappointment.repository.DoctorRepository;
 import com.jeffersonssousa.doctorsappointment.repository.PatientRepository;
-
-import jakarta.persistence.EntityNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 public class AppointmentServiceTest {

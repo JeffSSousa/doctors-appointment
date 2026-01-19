@@ -5,11 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 import com.jeffersonssousa.doctorsappointment.builders.DoctorTestBuilder;
-import com.jeffersonssousa.doctorsappointment.builders.PatientTestBuilder;
 import com.jeffersonssousa.doctorsappointment.entity.Login;
-import com.jeffersonssousa.doctorsappointment.entity.Patient;
 import com.jeffersonssousa.doctorsappointment.exception.business.DoctorAlreadyLinkedException;
-import com.jeffersonssousa.doctorsappointment.exception.business.PatientAlreadyLinkedException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
