@@ -2,15 +2,22 @@ package com.jeffersonssousa.doctorsappointment.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import com.jeffersonssousa.doctorsappointment.builders.AppointmentTestBuilder;
+import com.jeffersonssousa.doctorsappointment.builders.DoctorTestBuilder;
+import com.jeffersonssousa.doctorsappointment.builders.PatientTestBuilder;
+import com.jeffersonssousa.doctorsappointment.exception.business.InvalidAppointmentDateException;
+import com.jeffersonssousa.doctorsappointment.exception.business.UserNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -58,17 +65,28 @@ public class AppointmentServiceTest {
 		void shouldCreateAAppointment() {
 
 			// Arrange
-			LocalDateTime date = LocalDateTime.now().plusDays(1);
-			Doctor doctor = new Doctor();
-			Patient patient = new Patient();
-			AppointmentRequestDTO dto = new AppointmentRequestDTO(date, 1L, 1L, false);
-            Appointment appointment = new Appointment(null, dto.appointmentDate(),null,dto.isReturn(),null,null);
+            Doctor doctor = DoctorTestBuilder
+                                .aDoctor()
+                                .withDoctorId(1L)
+                                .build();
+
+            Patient patient = PatientTestBuilder
+                                .aPatient()
+                                .withPatientId(1L)
+                                .build();
+
+            Appointment appointment = AppointmentTestBuilder
+                                        .anAppointment()
+                                        .withDoctor(doctor)
+                                        .withPatient(patient)
+                                        .build();
 
 			when(doctorRepository.findById(anyLong())).thenReturn(Optional.of(doctor));
 			when(patientRepository.findById(anyLong())).thenReturn(Optional.of(patient));
+            when(appointmentRepository.save(any(Appointment.class))).thenReturn(appointment);
 
 			// Act
-			service.insert(appointment, dto.doctorId(), dto.patientId());
+			service.insert(appointment, doctor.getDoctorId(), patient.getPatientId());
 
 			// Assert
 			verify(doctorRepository, times(1)).findById(anyLong());
@@ -78,7 +96,7 @@ public class AppointmentServiceTest {
 			Appointment capturedAppointment = appointmentCaptor.getValue();
 
 			// Verify
-			assertEquals(dto.appointmentDate(), capturedAppointment.getAppointmentDate());
+			assertEquals(appointment.getAppointmentDate(), capturedAppointment.getAppointmentDate());
 			assertEquals(30, capturedAppointment.getDurationInMinutes());
 			assertEquals(doctor.getDoctorId(), capturedAppointment.getDoctor().getDoctorId());
 			assertEquals(patient.getPatientId(), capturedAppointment.getPatient().getPatientId());
@@ -90,12 +108,30 @@ public class AppointmentServiceTest {
 		void shouldThrowExceptionWhenDateIsInThePast() {
 
 			// Arrange
-			LocalDateTime date = LocalDateTime.now().minusDays(1);
-			AppointmentRequestDTO dto = new AppointmentRequestDTO(date, 1L, 1L, false);
-            Appointment appointment = new Appointment(null, dto.appointmentDate(),null,dto.isReturn(),null,null);
+            Doctor doctor = DoctorTestBuilder
+                    .aDoctor()
+                    .withDoctorId(1L)
+                    .build();
+
+            Patient patient = PatientTestBuilder
+                    .aPatient()
+                    .withPatientId(1L)
+                    .build();
+
+            Appointment appointment = AppointmentTestBuilder
+                    .anAppointment()
+                    .withDoctor(doctor)
+                    .withPatient(patient)
+                    .withAppointmentDate(LocalDateTime.now().minusNanos(1))
+                    .build();
+
 
 			// Act
-			IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> service.insert(appointment, dto.doctorId(), dto.patientId()));
+            InvalidAppointmentDateException e = assertThrows(InvalidAppointmentDateException.class,
+                                                            () -> service.insert(appointment,
+                                                                                doctor.getDoctorId(),
+                                                                                patient.getPatientId()
+                                                            ));
 
 			// Assert
 			assertEquals("A data tem que ser futura!!", e.getMessage());
@@ -107,14 +143,31 @@ public class AppointmentServiceTest {
 		void shouldThrowExceptionWhenDoctorNotFound() {
 
 			//Arrange
-			LocalDateTime date = LocalDateTime.now().plusDays(1);
-			AppointmentRequestDTO dto = new AppointmentRequestDTO(date, 1L, 1L, false);
-            Appointment appointment = new Appointment(null, dto.appointmentDate(),null,dto.isReturn(),null,null);
-			
+            Doctor doctor = DoctorTestBuilder
+                    .aDoctor()
+                    .withDoctorId(1L)
+                    .build();
+
+            Patient patient = PatientTestBuilder
+                    .aPatient()
+                    .withPatientId(1L)
+                    .build();
+
+            Appointment appointment = AppointmentTestBuilder
+                    .anAppointment()
+                    .withDoctor(doctor)
+                    .withPatient(patient)
+                    .build();
+
 			when(doctorRepository.findById(1L)).thenReturn(Optional.empty());
 
 			// Act & Assert
-			EntityNotFoundException e = assertThrows(EntityNotFoundException.class, () -> service.insert(appointment, dto.doctorId(), dto.patientId()));
+			UserNotFoundException e = assertThrows(UserNotFoundException.class,
+                                            () -> service.insert(appointment,
+                                                                doctor.getDoctorId(),
+                                                                patient.getPatientId()
+                                            ));
+
 			assertEquals("Médico não foi encontrado!!", e.getMessage());
 		}
 
@@ -122,18 +175,35 @@ public class AppointmentServiceTest {
 		@DisplayName("Deve lançar uma exceção caso o paciente não tenha sido encontrado")
 		void shouldThrowExceptionWhenPatientNotFound() {
 
-			//Arrange
-			LocalDateTime date = LocalDateTime.now().plusDays(1);
-			AppointmentRequestDTO dto = new AppointmentRequestDTO(date, 1L, 1L, false);
-            Appointment appointment = new Appointment(null, dto.appointmentDate(),null,dto.isReturn(),null,null);
-			Doctor doctor = mock(Doctor.class);
+            //Arrange
+            Doctor doctor = DoctorTestBuilder
+                    .aDoctor()
+                    .withDoctorId(1L)
+                    .build();
+
+            Patient patient = PatientTestBuilder
+                    .aPatient()
+                    .withPatientId(1L)
+                    .build();
+
+            Appointment appointment = AppointmentTestBuilder
+                    .anAppointment()
+                    .withDoctor(doctor)
+                    .withPatient(patient)
+                    .build();
 			
 			when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
 			when(patientRepository.findById(1L)).thenReturn(Optional.empty());
 
 			// Act & Assert
-			EntityNotFoundException e = assertThrows(EntityNotFoundException.class, () -> service.insert(appointment, dto.doctorId(), dto.patientId()));
-			assertEquals("Paciente não foi encontrado!!", e.getMessage());
+			UserNotFoundException e = assertThrows(UserNotFoundException.class,
+                                            () -> service.insert(appointment,
+                                                                doctor.getDoctorId(),
+                                                                patient.getPatientId()
+                                            ));
+
+
+            assertEquals("Paciente não foi encontrado!!", e.getMessage());
 		}
 	}
 }

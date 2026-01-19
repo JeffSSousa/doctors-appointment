@@ -7,6 +7,7 @@ import com.jeffersonssousa.doctorsappointment.entity.Doctor;
 import com.jeffersonssousa.doctorsappointment.entity.Login;
 import com.jeffersonssousa.doctorsappointment.entity.Patient;
 import com.jeffersonssousa.doctorsappointment.service.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class AuthController {
 
     @PostMapping("/doctor")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> registerDoctor(@RequestBody RegisterDoctorDTO dto){
+    public ResponseEntity<Void> registerDoctor(@Valid @RequestBody RegisterDoctorDTO dto){
 
         Login user = mapper.toUserDoctor(dto);
         Doctor doctor =  mapper.toEntityDoctor(dto);
@@ -37,7 +38,7 @@ public class AuthController {
     }
 
     @PostMapping("/patient")
-    public ResponseEntity<Void> registerPatient(@RequestBody RegisterPatientDTO dto){
+    public ResponseEntity<Void> registerPatient(@Valid @RequestBody RegisterPatientDTO dto){
 
         Login user = mapper.toUserPatient(dto);
         Patient patient = mapper.toEntityPatient(dto);
