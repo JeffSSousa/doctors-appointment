@@ -1,7 +1,6 @@
 package com.jeffersonssousa.doctorsappointment.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
@@ -9,6 +8,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import com.jeffersonssousa.doctorsappointment.builders.AppointmentTestBuilder;
@@ -32,6 +34,8 @@ import com.jeffersonssousa.doctorsappointment.entity.Patient;
 import com.jeffersonssousa.doctorsappointment.repository.AppoitmentRepository;
 import com.jeffersonssousa.doctorsappointment.repository.DoctorRepository;
 import com.jeffersonssousa.doctorsappointment.repository.PatientRepository;
+
+import javax.print.Doc;
 
 @ExtendWith(MockitoExtension.class)
 public class AppointmentServiceTest {
@@ -201,4 +205,58 @@ public class AppointmentServiceTest {
             assertEquals("Paciente não foi encontrado!!", e.getMessage());
 		}
 	}
+
+
+    @Nested
+    class listAppointByDoctor{
+
+        @Test
+        @DisplayName("Deve retornar agendamentos do Médico com sucesso")
+        void shouldFindAppointmentsByDoctor(){
+
+            Patient patient = PatientTestBuilder.aPatient()
+                                                .withPatientId(1L)
+                                                .build();
+
+            Doctor doctor = DoctorTestBuilder.aDoctor()
+                                            .withDoctorId(1L)
+                                            .build();
+
+            Appointment appointment = AppointmentTestBuilder.anAppointment()
+                                                            .withDoctor(doctor)
+                                                            .withPatient(patient)
+                                                            .build();
+
+            List<Appointment> list = new ArrayList<>();
+            list.add(appointment);
+
+            when(appointmentRepository.findAllByDoctor(any(Doctor.class))).thenReturn(list);
+            when(doctorRepository.findById(anyLong())).thenReturn(Optional.of(doctor));
+
+            List<Appointment> returnedList = service.listAppointmentByDoctor(1L);
+
+            verify(appointmentRepository, times(1)).findAllByDoctor(any(Doctor.class));
+            verify(doctorRepository, times(1)).findById(anyLong());
+
+            assertNotNull(returnedList);
+            assertEquals(list.size(), returnedList.size());
+            assertEquals(list.getFirst().getAppointmentDate(),returnedList.getFirst().getAppointmentDate());
+
+        }
+
+        @Test
+        @DisplayName("Deve lançar uma exceção caso o Médico não seja encontrado")
+        void shouldThrowExceptionWhenDoctorNotFound(){
+
+            when(doctorRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+            UserNotFoundException e = assertThrows(UserNotFoundException.class, () ->
+                                                   service.listAppointmentByDoctor(1L));
+
+            verify(doctorRepository, times(1)).findById(anyLong());
+
+            assertEquals("Não foi encontrado um Doctor com esse id: " + 1L, e.getMessage());
+        }
+
+    }
 }
