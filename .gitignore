@@ -5,7 +5,7 @@ target/
 !**/src/test/**/target/
 bin/
 .env
-.env.prod
+.env
 
 ### STS ###
 .apt_generated
